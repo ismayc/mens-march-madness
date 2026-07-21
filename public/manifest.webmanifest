@@ -1,0 +1,16 @@
+{
+  "name": "Men's March Madness",
+  "short_name": "MM Men's",
+  "description": "The 2026 NCAA men's basketball tournament in your timezone — live scores, bracket, and stats.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#3a0d12",
+  "theme_color": "#3a0d12",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
