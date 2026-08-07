@@ -125,15 +125,15 @@ describe('buildIcs', () => {
 
 describe('webcalUrl', () => {
   it('swaps https/http for the webcal scheme so a calendar app subscribes', () => {
-    expect(webcalUrl('https://the-nba-schedule.netlify.app/calendar.ics')).toBe(
-      'webcal://the-nba-schedule.netlify.app/calendar.ics'
+    expect(webcalUrl('https://mens-march-madness.netlify.app/calendar.ics')).toBe(
+      'webcal://mens-march-madness.netlify.app/calendar.ics'
     )
     expect(webcalUrl('http://x/y.ics')).toBe('webcal://x/y.ics')
   })
 
   it('leaves a query string (and its commas) intact', () => {
-    expect(webcalUrl('https://host/calendar.ics?teams=MIN,NY')).toBe(
-      'webcal://host/calendar.ics?teams=MIN,NY'
+    expect(webcalUrl('https://host/calendar.ics?teams=DUKE,ALA')).toBe(
+      'webcal://host/calendar.ics?teams=DUKE,ALA'
     )
   })
 
@@ -144,8 +144,8 @@ describe('webcalUrl', () => {
 
 describe('googleCalendarUrl', () => {
   it('wraps a RAW (un-encoded) webcal URL in Google’s cid deep link', () => {
-    expect(googleCalendarUrl('https://host/calendar.ics?teams=MIN,NY')).toBe(
-      'https://www.google.com/calendar/render?cid=webcal://host/calendar.ics?teams=MIN,NY'
+    expect(googleCalendarUrl('https://host/calendar.ics?teams=DUKE,ALA')).toBe(
+      'https://www.google.com/calendar/render?cid=webcal://host/calendar.ics?teams=DUKE,ALA'
     )
   })
 })
