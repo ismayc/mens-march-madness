@@ -6,6 +6,25 @@ data/source updates, deployment). Newest day on top.
 
 ## 2026-09-06
 
+- **Every league fact now lives in one file, `src/config/league.js`.** Same move as the
+  women's twin, landed second so the shape was already proven; 13 files import it instead
+  of carrying their own copy of the ESPN path, storage prefix, period vocabulary, `.ics`
+  identity, deploy host and locale. This pair needs it more than any other in the family:
+  the two repos are 86% identical and three of the four files that genuinely differ do so
+  only on halves versus quarters. That is now one field, `regulationPeriods`, rather than a
+  2 or a 4 written out in four files.
+- **The linescore heading read "By quarter".** The men's game is two halves. It was copy
+  inherited from the women's viewer, and the third instance of that contamination found
+  today. It now reads `By {LEAGUE.periodNoun}`. The old test could not have caught it: it
+  only asserted "By quarter" was absent in spoiler-free mode, which stayed true either way.
+- **A nonsense period no longer renders as the second half.** `livePeriod` picked its label
+  with `p === 1 ? '1ST' : '2ND'`, so any truthy period that was not 1 claimed second half.
+  It now falls back to "LIVE", matching the women's twin.
+- **A stale note claimed the linescore columns "still read Q1/Q2".** They read 1st and 2nd.
+  The test now pins that text rather than only the column count.
+- **New `test/chrome-identity.test.js`** holds `index.html`, the manifest and
+  `package.json` to the config, including the pre-paint theme key. Verified it fails when
+  the config claims the sibling's prefix.
 - **Nailbiter alerts could not fire in the second half.** `REGULATION_PERIODS` was 4,
   inherited from the women's viewer, where four quarters is right. The men's game is two
   halves, so `isLate` was false for the whole of the second half and a close finish went
