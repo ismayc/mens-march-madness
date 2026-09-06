@@ -13,7 +13,11 @@
 
 // A one-possession margin in the final period.
 const CLOSE_MARGIN = 5
-const REGULATION_PERIODS = 4
+// Men's college regulation is TWO halves, so period 2 is the closing period and
+// anything beyond it is overtime. The women's viewer plays four quarters and uses 4;
+// inheriting that value here made `isLate` false for the whole second half, so a
+// nailbiter could not fire until 2OT.
+const REGULATION_PERIODS = 2
 
 const leaderOf = (g) => {
   if (!g?.score) return null

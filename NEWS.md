@@ -6,6 +6,12 @@ data/source updates, deployment). Newest day on top.
 
 ## 2026-09-06
 
+- **Nailbiter alerts could not fire in the second half.** `REGULATION_PERIODS` was 4,
+  inherited from the women's viewer, where four quarters is right. The men's game is two
+  halves, so `isLate` was false for the whole of the second half and a close finish went
+  unannounced until 2OT. Set to 2. The nailbiter tests were copies of the women's too and
+  passed on period 4, a state the men's game cannot reach; they now read in halves, and
+  the one that matters fails against the old value.
 - **Box scores are built for a phone now.** Three changes, all below 560px and none of
   them touching the desktop table. The four columns that answer "who played well"
   (MIN, PTS, REB, AST) show by default, which fits with no sideways scroll at all, and

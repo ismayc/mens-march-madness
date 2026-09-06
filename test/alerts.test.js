@@ -60,28 +60,37 @@ describe('detectEvents', () => {
     expect(detectEvents(before, after)).toEqual([])
   })
 
+  // The men's game is two halves: period 1 and 2 are regulation, 3 and up are
+  // overtime. A test written in quarters passes for the wrong reason here, because
+  // period 4 is already 2OT.
   describe('nailbiters', () => {
-    it('fires on entering a close fourth quarter', () => {
-      const before = [g({ live: true, score: [70, 60], period: 3 })]
-      const after = [g({ live: true, score: [80, 78], period: 4 })]
+    it('fires on entering a close second half', () => {
+      const before = [g({ live: true, score: [40, 30], period: 1 })]
+      const after = [g({ live: true, score: [50, 48], period: 2 })]
       expect(kinds(detectEvents(before, after))).toEqual(['nailbiter'])
     })
 
     it('fires once, not on every poll while it holds', () => {
-      const close = g({ live: true, score: [80, 78], period: 4 })
-      const stillClose = g({ live: true, score: [82, 80], period: 4 })
+      const close = g({ live: true, score: [50, 48], period: 2 })
+      const stillClose = g({ live: true, score: [52, 50], period: 2 })
       expect(detectEvents([close], [stillClose])).toEqual([])
     })
 
-    it('ignores a close margin before the fourth quarter', () => {
-      const before = [g({ live: true, score: [40, 39], period: 2 })]
-      const after = [g({ live: true, score: [42, 41], period: 3 })]
+    it('ignores a close margin in the first half', () => {
+      const before = [g({ live: true, score: [20, 19], period: 1 })]
+      const after = [g({ live: true, score: [22, 21], period: 1 })]
       expect(detectEvents(before, after)).toEqual([])
     })
 
-    it('ignores a blowout in the fourth', () => {
-      const before = [g({ live: true, score: [70, 50], period: 3 })]
-      const after = [g({ live: true, score: [90, 60], period: 4 })]
+    it('ignores a blowout in the second half', () => {
+      const before = [g({ live: true, score: [70, 50], period: 1 })]
+      const after = [g({ live: true, score: [90, 60], period: 2 })]
+      expect(detectEvents(before, after)).toEqual([])
+    })
+
+    it('does not re-fire when a close second half runs into overtime', () => {
+      const before = [g({ live: true, score: [70, 68], period: 2 })]
+      const after = [g({ live: true, score: [72, 70], period: 3 })]
       expect(detectEvents(before, after)).toEqual([])
     })
   })
