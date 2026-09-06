@@ -45,16 +45,26 @@ describe('line score', () => {
 
   it('renders one column per period played, plus a leading spacer and a total', async () => {
     // College regulation is two halves, so a non-OT game's line has two period columns.
-    // (NOTE: the header still reads Q1/Q2 — an unconverted NBA-quarter label in
-    // GameDetail's LineScore; see the app-bug report. This test pins the column *count*,
-    // which is the load-bearing behaviour, not the carried-over label text.)
+    // The NOTE that used to sit here claimed the header still read Q1/Q2, "an
+    // unconverted NBA-quarter label". It does not, and the assertions below say so:
+    // the columns read 1st and 2nd. The label text is pinned now, not just the count.
     const { container } = await openScoring(withLine)
     const periods = Math.max(withLine.line.home.length, withLine.line.away.length)
     expect(periods).toBe(2)
     const heads = [...container.querySelectorAll('.linescore thead th')].map((n) => n.textContent)
     expect(heads).toHaveLength(periods + 2)
     expect(heads[0]).toBe('')
+    expect(heads.slice(1, -1)).toEqual(['1st', '2nd'])
     expect(heads.at(-1)).toBe('T')
+  })
+
+  it('heads the table with this tournament period noun', async () => {
+    // Read "By quarter" until today, copied from the women's twin, which really does
+    // play quarters. The negative assertion in the spoiler-free test below could not
+    // catch it: "By quarter" is absent whether the heading is right or wrong.
+    await openScoring(withLine)
+    expect(screen.getByText('By half')).toBeInTheDocument()
+    expect(screen.queryByText('By quarter')).not.toBeInTheDocument()
   })
 
   it('adds a period column for an overtime game', async () => {
@@ -83,7 +93,7 @@ describe('line score', () => {
   it('is hidden in spoiler-free mode', async () => {
     const { container } = await openScoring(withLine, { hideScores: true })
     expect(container.querySelector('.linescore')).toBeNull()
-    expect(screen.queryByText('By quarter')).not.toBeInTheDocument()
+    expect(screen.queryByText('By half')).not.toBeInTheDocument()
   })
 
   it('is omitted for a game that has not been played', () => {
