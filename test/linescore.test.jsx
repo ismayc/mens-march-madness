@@ -135,4 +135,13 @@ describe('livePeriod', () => {
     expect(livePeriod({ statusLabel: 'Delayed' })).toBe('DELAYED')
     expect(livePeriod({})).toBe('LIVE')
   })
+
+  it('shows a generic live label for a period outside the modeled halves', () => {
+    // A truthy period the feed should not emit (not a 1-2 half, not a 3+ overtime)
+    // misses the label array and hits the defensive `|| 'LIVE'` guard. This used to
+    // render '2ND' instead, because the label was picked with `p === 1 ? … : …` and
+    // anything that was not 1 fell through to second half. The women's twin has
+    // always behaved this way; the two now agree.
+    expect(livePeriod({ period: -1, statusLabel: '' })).toBe('LIVE')
+  })
 })

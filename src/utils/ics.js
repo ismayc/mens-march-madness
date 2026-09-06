@@ -5,10 +5,11 @@
 
 import { TEAM_BY_ABBR } from '../data/teams.js'
 import { ROUNDS } from '../data/schedule.js'
+import { LEAGUE } from '../config/league.js'
 
 // A college basketball game runs about two hours.
-const DURATION = 'PT2H30M'
-const PRODID = '-//mens-march-madness//EN'
+const DURATION = LEAGUE.ics.durationIso
+const PRODID = LEAGUE.ics.prodId
 
 // Backslash, semicolon, and comma are delimiters in RFC 5545 and must be escaped;
 // newlines become the literal two-character sequence \n.
@@ -66,7 +67,7 @@ function vevent(game, { now }) {
   const lines = [
     'BEGIN:VEVENT',
     // Stable UID so re-importing updates events rather than duplicating them.
-    `UID:${game.id}@mens-march-madness`,
+    `UID:${game.id}@${LEAGUE.ics.domain}`,
     `DTSTAMP:${toIcsDate(now)}`,
     `DTSTART:${toIcsDate(game.tip)}`,
     `DURATION:${DURATION}`,
@@ -96,7 +97,7 @@ export function buildIcs(games, { name = "Men's March Madness", now = new Date()
   return lines.map(fold).join('\r\n') + '\r\n'
 }
 
-export function downloadIcs(games, { filename = 'mens-march-madness.ics', name } = {}) {
+export function downloadIcs(games, { filename = `${LEAGUE.ics.filenameBase}.ics`, name } = {}) {
   const blob = new Blob([buildIcs(games, { name })], { type: 'text/calendar;charset=utf-8' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')

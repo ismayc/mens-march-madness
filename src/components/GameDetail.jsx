@@ -9,6 +9,7 @@ import { useServices } from '../context/services.jsx'
 import { useModalA11y } from '../hooks/useModalA11y.js'
 import { PlayerBox, TeamStatsSection, InjuryReport, WinProbSection } from './GameSummary.jsx'
 import TeamLogo from './TeamLogo.jsx'
+import { LEAGUE } from '../config/league.js'
 
 const one = (n) => n.toFixed(1)
 
@@ -27,8 +28,14 @@ function LineScore({ game, hideScores }) {
   const periods = Math.max(home.length, away.length)
   if (!periods) return null
 
-  // College basketball is two halves, then overtime periods.
-  const label = (i) => (i < 2 ? ['1st', '2nd'][i] : periods - 2 > 1 ? `OT${i - 1}` : 'OT')
+  // Regulation is LEAGUE.regulationPeriods long, then overtime periods.
+  const { regulationPeriods: REG, overtimeLabel: OT, periodLabels } = LEAGUE
+  const label = (i) =>
+    i < REG
+      ? periodLabels[i].toLowerCase()
+      : periods - REG > 1
+        ? `${OT}${i - REG + 1}`
+        : OT
   const sum = (arr) => arr.reduce((a, b) => a + b, 0)
 
   const Row = ({ abbr, vals, total }) => (

@@ -1,3 +1,4 @@
+import { LEAGUE } from '../config/league.js'
 // Notable-moment detection.
 //
 // A soccer viewer can toast every goal — ~2.7 a match, each one genuinely notable.
@@ -11,13 +12,11 @@
 // invisible. That's an acceptable trade — those are exactly the flips not worth a
 // notification.
 
-// A one-possession margin in the final period.
-const CLOSE_MARGIN = 5
-// Men's college regulation is TWO halves, so period 2 is the closing period and
-// anything beyond it is overtime. The women's viewer plays four quarters and uses 4;
-// inheriting that value here made `isLate` false for the whole second half, so a
-// nailbiter could not fire until 2OT.
-const REGULATION_PERIODS = 2
+// Both come from the config, which is also where the two-halves-vs-four-quarters
+// difference from the women's viewer is written down. Inheriting a 4 here made
+// `isLate` false for the whole second half, so a nailbiter could not fire until 2OT.
+const CLOSE_MARGIN = LEAGUE.closeMargin
+const REGULATION_PERIODS = LEAGUE.regulationPeriods
 
 const leaderOf = (g) => {
   if (!g?.score) return null
