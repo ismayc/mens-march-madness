@@ -6,6 +6,10 @@ data/source updates, deployment). Newest day on top.
 
 ## 2026-09-06
 
+- **The manifest assertion in `test/chrome-identity.test.js` now checks `LEAGUE.title`.**
+  It checked `LEAGUE.name`, which happened to be identical here but is the short league
+  label, not the full product title a phone shows under the icon. Caught while adding the
+  same test to the WNBA viewer, where the two genuinely differ.
 - **Every league fact now lives in one file, `src/config/league.js`.** Same move as the
   women's twin, landed second so the shape was already proven; 13 files import it instead
   of carrying their own copy of the ESPN path, storage prefix, period vocabulary, `.ics`
