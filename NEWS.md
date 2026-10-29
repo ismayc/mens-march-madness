@@ -4,6 +4,16 @@ A dated changelog for Men's March Madness. Each heading is a calendar
 day; bullet points capture every change made that day (features, fixes,
 data/source updates, deployment). Newest day on top.
 
+## 2026-10-29
+
+- **Spoiler-free mode no longer gives away overtime or the winner.** With scores hidden,
+  a final still read "Final/OT", which says the game was tied after regulation. Finals
+  now read only "Final" on the game cards. A live game reads only "LIVE" on the card and
+  the next-game banner, since an "OT" badge (or a halves badge that later changes) tells
+  the same story; the badge tooltip drops ESPN's clock too. The bracket stopped bolding
+  the winner's row and stopped showing its "OT" tag while scores are hidden. Found on the
+  NFL viewer (issue #1). The game popout already hid all of this until "Reveal score".
+
 ## 2026-09-18
 
 - **Player names in the Game leaders block are no longer cut on a phone.** The two teams

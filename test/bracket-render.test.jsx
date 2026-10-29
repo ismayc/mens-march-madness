@@ -52,6 +52,15 @@ describe('Bracket with a completed tournament', () => {
     await userEvent.click(screen.getByRole('tab', { name: 'East' }))
     expect(container.querySelector('.mm-score')).toBeNull()
   })
+
+  // Issue: a bold winner row gives the result away as surely as the score does.
+  it('drops the winner highlight in spoiler-free mode', () => {
+    const shown = render(<Bracket games={GAMES} />)
+    expect(shown.container.querySelector('.mm-team.won')).not.toBeNull()
+    shown.unmount()
+    const { container } = render(<Bracket games={GAMES} hideScores />)
+    expect(container.querySelector('.mm-team.won')).toBeNull()
+  })
 })
 
 describe('Bracket partway through the tournament', () => {

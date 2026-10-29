@@ -15,6 +15,21 @@ beforeEach(() => {
   localStorage.clear()
 })
 
+describe('GameCard: spoiler-free mode', () => {
+  // An OT tag, final or live, says the game was tied after regulation.
+  it('shows no overtime and no live period', () => {
+    const { container, unmount } = render(<GameCard game={{ ...base, score: [80, 75], ot: 2 }} tz={TZ} hideScores />)
+    expect(container.querySelector('.final-badge').textContent).toBe('Final')
+    unmount()
+    const { container: c1 } = render(
+      <GameCard game={{ ...base, live: true, period: 3, statusLabel: 'OT 2:12' }} tz={TZ} hideScores />
+    )
+    const badge = c1.querySelector('.live-badge')
+    expect(badge.textContent.trim()).toBe('● LIVE')
+    expect(badge.getAttribute('title')).not.toMatch(/OT/)
+  })
+})
+
 describe('GameCard — live badge', () => {
   it('shows the live period label rather than a running clock', () => {
     // A live game routes through livePeriod for the durable period label.

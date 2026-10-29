@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Bracket from '../src/components/Bracket.jsx'
 
@@ -81,6 +81,13 @@ describe('Bracket — projected feeders and TBD team lines', () => {
     const { container } = await openSouth()
     const otLabels = [...container.querySelectorAll('.mm-ot')].map((n) => n.textContent)
     expect(otLabels).toContain('OT')
+  })
+
+  // An OT tag says the game was tied after regulation, so spoiler-free mode drops it.
+  it('drops the OT tag in spoiler-free mode', async () => {
+    const { container } = render(<Bracket games={games} hideScores />)
+    await userEvent.click(screen.getByRole('tab', { name: 'South' }))
+    expect(container.querySelector('.mm-ot')).toBeNull()
   })
 
   it('shows TBD for projected Round-of-64 slots with no feeder labels', async () => {
