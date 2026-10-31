@@ -4,6 +4,13 @@ A dated changelog for Men's March Madness. Each heading is a calendar
 day; bullet points capture every change made that day (features, fixes,
 data/source updates, deployment). Newest day on top.
 
+## 2026-10-31
+
+- **Spoiler-free mode keeps only the tipoff alert.** Lead-change, close-finish, and final alerts say who leads,
+  how close it is, or who won, so with scores hidden only the tipoff alert shows.
+- **The close-finish alert no longer says "in the fourth".** The men's game has two halves,
+  so the alert now says "in the second half", or "in overtime" after regulation.
+
 ## 2026-10-29
 
 - **Spoiler-free mode no longer gives away overtime or the winner.** With scores hidden,
