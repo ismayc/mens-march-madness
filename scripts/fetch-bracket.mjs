@@ -115,8 +115,10 @@ function normalizeEvent(ev) {
   const score = completed
     ? [Number(home.score?.value ?? home.score), Number(away.score?.value ?? away.score)]
     : undefined
-  // College regulation is two halves (period 2); anything beyond is overtime.
-  const otPeriods = c.status?.period > 2 ? c.status.period - 2 : undefined
+  // College regulation is two halves (period 2); anything beyond is overtime. Like the
+  // score, only for a completed game: an NFL refresh during a live overtime (November 8,
+  // 2026) committed overtime on an unscored game, and its refresh gate failed.
+  const otPeriods = completed && c.status?.period > 2 ? c.status.period - 2 : undefined
   // Winner is authoritative from the feed; fall back to score for older payloads.
   const winner = home.winner ? 'home' : away.winner ? 'away' : completed
     ? score[0] > score[1] ? 'home' : 'away'
